@@ -1,0 +1,53 @@
+﻿@model List<Practical_8.Models.Product>
+
+@{
+    ViewBag.Title = "Inventory Management";
+}
+
+<h2>Inventory Management</h2>
+
+<p>
+    @Html.ActionLink("Add New Product", "Create")
+</p>
+
+<table border="1" cellpadding="10" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductId</td>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price.ToString("0.00")</td>
+                <td>
+                    @Html.ActionLink(
+                        "Edit", "Edit",
+                        new { id = item.ProductId })
+
+                    |
+
+                    @using (Html.BeginForm(
+                        "Delete", "Product",
+                        new { id = item.ProductId },
+                        FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit"
+                               value="Delete"
+                               onclick="return confirm('Delete this product?');" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
